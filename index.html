@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<title>FLEXIN — Real Presence. Pure Aura.</title>
+<title>RAVNHOOD — Real Presence. Pure Aura.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -189,7 +189,7 @@ body {
 nav {
   position:fixed; top:0; left:0; right:0; z-index:1000; height:60px;
   display:flex; align-items:center; justify-content:space-between;
-  padding:0 48px;
+  padding:0 48px; position:fixed;
   background:rgba(255,255,255,.95);
   backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
   border-bottom:1.5px solid var(--black);
@@ -197,20 +197,29 @@ nav {
 }
 nav.at-dark { background:rgba(0,0,0,.95); border-bottom-color: rgba(255,255,255,.08); }
 nav.at-dark .nav-logo { color:var(--white); }
-nav.at-dark .nav-links a { color:rgba(255,255,255,.4); }
-nav.at-dark .nav-links a:hover { color:var(--white); }
-nav.at-dark .nav-links a::after { background:var(--white); }
+nav.at-dark .nav-links a .nl { color:rgba(255,255,255,.4); }
+nav.at-dark .nav-links a:hover .nl { color:rgba(255,255,255,.9); }
+/* at-dark underline removed */
 nav.at-dark .nav-cart-icon svg { stroke: rgba(255,255,255,0.7); }
 nav.at-dark .nav-cart-icon:active svg { stroke: var(--white); }
 nav.at-dark .hamburger span { background:rgba(255,255,255,.6); }
 nav.at-dark .cart-badge { color: var(--white) !important; opacity: 1 !important; }
 
 .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:10px; color:var(--black); text-decoration:none; transition:color .3s; cursor:pointer; }
-.nav-links { display:flex; gap:40px; list-style:none; }
-.nav-links a { font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); text-decoration:none; position:relative; padding-bottom:3px; transition:color .2s; cursor:pointer; }
-.nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1.5px; background:var(--black); transition:width .3s cubic-bezier(.77,0,.175,1); }
-.nav-links a:hover { color:var(--black); }
-.nav-links a:hover::after { width:100%; }
+.nav-links { display:flex; gap:40px; list-style:none; position:absolute; left:50%; transform:translateX(-50%); }
+.nav-links a { font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); text-decoration:none; position:relative; padding-bottom:3px; cursor:pointer; display:inline-flex; align-items:center; gap:0; overflow:visible; }
+.nav-links a::after { display:none; }
+.nav-links a:hover { color:inherit; }
+/* ── Nav letter wave ── */
+.nl {
+  display:inline-block;
+  transition:
+    transform 0.35s calc(var(--i) * 0.04s) cubic-bezier(.34,1.56,.64,1),
+    color 0.25s calc(var(--i) * 0.03s) ease,
+    opacity 0.2s calc(var(--i) * 0.025s) ease;
+}
+.nav-links a:hover .nl { transform:translateY(-4px); color:var(--black); opacity:1; }
+.nav-links a:not(:hover) .nl { transform:translateY(0); }
 .nav-right { display:flex; align-items:center; gap:20px; }
 
 .nav-cart-btn { font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); background:none; border:none; display:flex; align-items:center; gap:8px; transition:color .2s; padding:8px 0; cursor:pointer; user-select:none; -webkit-user-select:none; }
@@ -237,11 +246,10 @@ nav.at-dark .cart-badge { color: var(--white) !important; opacity: 1 !important;
 }
 .announce-track {
   display:inline-flex; white-space:nowrap;
-  animation: announce-scroll 24s linear infinite;
   will-change: transform;
 }
-@keyframes announce-scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-.announce-sep { margin:0 20px; opacity:.3; }
+
+.announce-sep { margin:0 20px; opacity:.3; vertical-align:middle; }
 
 .hero {
   position:relative;
@@ -319,8 +327,8 @@ nav.at-dark .cart-badge { color: var(--white) !important; opacity: 1 !important;
 @keyframes h1-flash { 0%,90%,100%{opacity:0} 93%{opacity:1} 96%{opacity:0} 97%{opacity:.6} }
 
 .hero-desc {
-  font-size:13px; font-weight:300; letter-spacing:.5px; color:rgba(255,255,255,.35);
-  line-height:2.1; max-width:420px; margin:26px 0 34px;
+  font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:600; letter-spacing:3px; color:rgba(255,255,255,.45);
+  text-transform:uppercase; line-height:2.4; max-width:460px; margin:26px 0 34px;
   animation:fade-up .8s 2.5s both;
 }
 @keyframes fade-up { from{opacity:0;transform:translateY(14px); filter:blur(3px)} to{opacity:1;transform:none; filter:blur(0)} }
@@ -356,14 +364,14 @@ nav.at-dark .cart-badge { color: var(--white) !important; opacity: 1 !important;
 @keyframes scroll-dot { 0%{top:0;opacity:1} 100%{top:68px;opacity:0} }
 
 .ticker { background:var(--white); border-top:2px solid var(--black); border-bottom:2px solid var(--black); padding:18px 0; overflow:hidden; position:relative; }
-.ticker-track { display:flex; white-space:nowrap; animation:tick 25s linear infinite; width:max-content; }
-.ticker-item { font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:6px; color:rgba(0,0,0,.15); padding:0 32px; flex-shrink:0; transition: color .3s; text-transform:uppercase; }
+.ticker-track { display:flex; white-space:nowrap; width:max-content; }
+.ticker-item { font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:6px; color:rgba(0,0,0,.15); padding:0 32px; flex-shrink:0; transition: color .3s; text-transform:uppercase; display:inline-flex; align-items:center; }
 .ticker-item.hi { color:var(--black); }
-.ticker-dot { color:var(--black); padding:0 12px; font-size:6px; }
-@keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.ticker-dot { color:var(--black); padding:0 12px; font-size:6px; vertical-align:middle; display:inline-flex; align-items:center; }
 
-.ticker-reverse .ticker-track { animation:tick-reverse 28s linear infinite; }
-@keyframes tick-reverse { 0%{transform:translateX(-50%)} 100%{transform:translateX(0)} }
+
+.ticker-reverse .ticker-track {  }
+
 
 section { padding:100px 80px; }
 .section-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:52px; padding-bottom:20px; border-bottom:2px solid var(--black); }
@@ -487,7 +495,7 @@ section { padding:100px 80px; }
 @keyframes card-in { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
 .pcard.filter-in { animation: card-in .38s cubic-bezier(.25,.46,.45,.94) both; }
 
-.story { padding:0; display:grid; grid-template-columns:1fr 1fr; position:relative; }
+.story { padding:0; display:grid; grid-template-columns:1fr 1fr; position:relative; border-bottom:3px solid var(--black); }
 .story-visual { background:var(--black); position:relative; overflow:hidden; min-height:600px; }
 .story-ph { width:100%; height:100%; min-height:600px; background:var(--near-black); display:flex; align-items:center; justify-content:center; position:relative; }
 .story-ph::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,.02) 60px, rgba(255,255,255,.02) 61px), repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,.02) 60px, rgba(255,255,255,.02) 61px); }
@@ -498,8 +506,8 @@ section { padding:100px 80px; }
 .story-tag::before { content:''; width:24px; height:1.5px; background:var(--black); }
 .story-h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(56px,5vw,90px); line-height:.9; color:var(--black); margin-bottom:30px; letter-spacing:2px; position:relative; }
 .story-h2 em { color:var(--muted); font-style:normal; }
-.story-h2::after { content:'FLEX'; position:absolute; right:-40px; top:-20px; font-size:clamp(100px,12vw,200px); color:rgba(0,0,0,.03); pointer-events:none; letter-spacing:8px; z-index:-1; }
-.story-p { font-size:13px; color:var(--muted2); line-height:1.9; font-weight:300; margin-bottom:44px; max-width:400px; }
+.story-h2::after { content:'RAVN'; position:absolute; right:-40px; top:-20px; font-size:clamp(100px,12vw,200px); color:rgba(0,0,0,.03); pointer-events:none; letter-spacing:8px; z-index:-1; }
+.story-p { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); line-height:2.5; margin-bottom:44px; max-width:420px; }
 .story-stats { display:flex; gap:44px; padding-top:32px; border-top:1.5px solid var(--black); margin-bottom:44px; }
 .stat-n { font-family:'Bebas Neue',sans-serif; font-size:clamp(42px,5vw,56px); color:var(--black); letter-spacing:2px; display:block; margin-bottom:2px; position:relative; }
 .stat-n::after { content:''; position:absolute; bottom:-4px; left:0; width:30px; height:2px; background:var(--black); }
@@ -519,13 +527,13 @@ section { padding:100px 80px; }
 .drop-banner::after { content:'FW26'; position:absolute; right:-40px; top:50%; transform:translateY(-50%); font-family:'Bebas Neue',sans-serif; font-size:400px; color:rgba(255,255,255,.03); line-height:1; letter-spacing:-18px; pointer-events:none; }
 .drop-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:7px; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:10px; font-weight:700; }
 .drop-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,6vw,88px); color:var(--white); letter-spacing:2px; line-height:.92; }
-.drop-sub { font-size:12px; color:rgba(255,255,255,.35); margin-top:10px; letter-spacing:.5px; }
+.drop-sub { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,.4); margin-top:10px; }
 .drop-right { text-align:right; position:relative; z-index:1; flex-shrink:0; }
-.countdown { display:flex; gap:24px; justify-content:flex-end; margin-bottom:32px; align-items:flex-start; }
+.countdown { display:flex; gap:16px; justify-content:flex-end; margin-bottom:32px; align-items:flex-start; flex-wrap:nowrap; }
 .cbox { text-align:center; }
-.cnum { font-family:'Bebas Neue',sans-serif; font-size:clamp(48px,6vw,72px); color:var(--white); line-height:1; display:block; min-width:80px; text-shadow:0 0 40px rgba(255,255,255,.1); }
+.cnum { font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,6vw,72px); color:var(--white); line-height:1; display:block; min-width:60px; text-shadow:0 0 40px rgba(255,255,255,.1); }
 .clabel { font-family:'Barlow Condensed',sans-serif; font-size:8px; letter-spacing:4px; color:rgba(255,255,255,.25); text-transform:uppercase; }
-.csep { font-family:'Bebas Neue',sans-serif; font-size:60px; color:rgba(255,255,255,.1); align-self:flex-start; margin-top:4px; }
+.csep { font-family:'Bebas Neue',sans-serif; font-size:clamp(32px,5vw,60px); color:rgba(255,255,255,.1); align-self:flex-start; margin-top:4px; }
 
 .newsletter { background:var(--white); padding:120px 80px; text-align:center; position:relative; overflow:hidden; }
 .newsletter::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:700px; height:700px; border:1px solid rgba(0,0,0,.04); border-radius:50%; pointer-events:none; animation:ring-pulse 4s ease-in-out infinite; }
@@ -534,7 +542,7 @@ section { padding:100px 80px; }
 .nl-tag { font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:7px; text-transform:uppercase; color:var(--muted); margin-bottom:20px; display:block; position:relative; z-index:1; }
 .nl-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(60px,8vw,120px); color:var(--black); letter-spacing:5px; line-height:.92; margin-bottom:18px; position:relative; z-index:1; }
 .nl-title::after { content:'JOIN'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:clamp(120px,18vw,280px); color:rgba(0,0,0,.03); pointer-events:none; letter-spacing:20px; z-index:-1; }
-.nl-sub { font-size:13px; color:var(--muted); margin-bottom:48px; font-weight:300; position:relative; z-index:1; }
+.nl-sub { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--muted); margin-bottom:48px; position:relative; z-index:1; }
 .nl-form { display:flex; max-width:480px; margin:0 auto; position:relative; z-index:1; }
 .nl-input { flex:1; background:transparent; border:1.5px solid var(--black); border-right:none; color:var(--black); padding:16px 22px; font-family:'Barlow',sans-serif; font-size:16px; outline:none; transition:border-color .2s; min-height:52px; border-radius:0; -webkit-appearance:none; }
 .nl-input::placeholder { color:var(--muted); }
@@ -563,9 +571,9 @@ section { padding:100px 80px; }
 .size-table th { font-weight:800; text-transform:uppercase; font-size:9px; letter-spacing:4px; }
 
 footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid rgba(255,255,255,.06); }
-.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:60px; padding-bottom:60px; border-bottom:1px solid rgba(255,255,255,.06); margin-bottom:36px; }
+.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:60px; padding-bottom:60px; border-bottom:1px solid rgba(255,255,255,.06); margin-bottom:36px; }
 .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:42px; letter-spacing:8px; color:var(--white); display:block; margin-bottom:16px; text-decoration:none; cursor:pointer; }
-.footer-desc { font-size:12px; color:rgba(255,255,255,.3); line-height:1.8; max-width:260px; }
+.footer-desc { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.35); line-height:2.2; max-width:260px; }
 .footer-socials { display:flex; gap:8px; margin-top:28px; }
 .soc { width:44px; height:44px; border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:all .2s; cursor:pointer; touch-action:manipulation; }
 .soc svg { width:16px; height:16px; fill:rgba(255,255,255,.35); transition:fill .2s; }
@@ -574,7 +582,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 .footer-col-title { font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:5px; text-transform:uppercase; color:var(--white); margin-bottom:22px; font-weight:700; }
 .footer-links { list-style:none; }
 .footer-links li { margin-bottom:12px; }
-.footer-links a, .footer-links button { font-size:12px; color:rgba(255,255,255,.3); text-decoration:none; transition:color .2s; letter-spacing:.3px; background:none; border:none; cursor:pointer; padding:0; font-family:'Barlow',sans-serif; font-weight:300; touch-action:manipulation; min-height:36px; display:inline-flex; align-items:center; }
+.footer-links a, .footer-links button { font-size:10px; color:rgba(255,255,255,.35); text-decoration:none; transition:color .2s; letter-spacing:3px; text-transform:uppercase; background:none; border:none; cursor:pointer; padding:0; font-family:'Barlow Condensed',sans-serif; font-weight:700; touch-action:manipulation; min-height:36px; display:inline-flex; align-items:center; }
 .footer-links a:active, .footer-links button:active { color:var(--white); }
 .footer-bottom { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
 .footer-copy { font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.12); }
@@ -781,15 +789,15 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
   .story-content { padding:44px 24px; }
   .story-stats { flex-wrap:wrap; gap:28px; }
   .bs-grid { grid-template-columns:repeat(2,1fr); }
-  .drop-banner { flex-direction:column; padding:44px 24px; }
+  .drop-banner { flex-direction:column; padding:44px 20px; }
   .drop-banner::after { font-size:180px; }
   .drop-right { text-align:left; }
-  .countdown { justify-content:flex-start; }
+  .countdown { justify-content:flex-start; gap:10px; }
   .newsletter { padding:80px 24px; }
   .nl-form { flex-direction:column; }
   .nl-input { border-right:1.5px solid var(--black); border-bottom:none; }
   footer { padding:44px 20px 24px; }
-  .footer-grid { grid-template-columns:1fr 1fr; gap:32px; }
+  .footer-grid { grid-template-columns:1fr; gap:36px; }
   .footer-bottom { flex-direction:column; text-align:center; }
   .cart { width:100%; right:-100%; }
   .section-head { flex-direction:column; align-items:flex-start; gap:14px; }
@@ -807,7 +815,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 
 @media (max-width:480px) {
   .cats-grid { grid-template-columns:1fr 1fr; gap:3px; }
-  .footer-grid { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr 1fr; gap:20px; }
   .featured-grid { gap:3px; }
   .products-grid { gap:3px; }
   .bs-grid { grid-template-columns:repeat(2,1fr); }
@@ -838,8 +846,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
   .pdp-sz:hover { border-color: var(--border2); color: var(--muted2); }
   .fbtn:hover:not(.active) { background:transparent; color:var(--muted); border-color:var(--border); }
   .mobile-menu a:hover { color:rgba(255,255,255,.45); }
-  .nav-links a:hover { color: var(--muted); }
-  .nav-links a:hover::after { width: 0; }
+  .nav-links a .nl { transform:none !important; }
   .section-link:hover { color: var(--muted); border-bottom-color: transparent; }
   .soc:hover { border-color: rgba(255,255,255,.15); background: transparent; }
   .soc:hover svg { fill: rgba(255,255,255,.35); }
@@ -862,7 +869,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 
 <!-- PAGE LOADER -->
 <div class="page-loader" id="pageLoader">
-  <div class="loader-text" data-text="FLEXIN">FLEXIN</div>
+  <div class="loader-text" data-text="RAVNHOOD">RAVNHOOD</div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>
 
@@ -904,7 +911,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
       <tr><td>XL</td><td>110–116</td><td>48</td><td>73</td></tr>
     </tbody>
   </table>
-  <p style="margin-top:20px;font-size:11px;color:var(--muted);letter-spacing:.3px;line-height:1.7;">FLEXIN pieces are oversized by design. If you want a true oversized fit, go true-to-size. For a slimmer look, size down.</p>
+  <p style="margin-top:20px;font-size:11px;color:var(--muted);letter-spacing:.3px;line-height:1.7;">RAVNHOOD pieces are oversized by design. If you want a true oversized fit, go true-to-size. For a slimmer look, size down.</p>
 </div>
 
 <!-- POLICY MODAL -->
@@ -917,7 +924,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 <!-- PRODUCT DETAIL PAGE OVERLAY -->
 <div class="pdp-overlay" id="pdpOverlay">
   <div class="pdp-bar">
-    <div class="pdp-breadcrumb">FLEXIN <span style="color:var(--muted)">/ SS26 /</span> <span id="pdpBreadName">—</span></div>
+    <div class="pdp-breadcrumb">RAVNHOOD <span style="color:var(--muted)">/ SS26 /</span> <span id="pdpBreadName">—</span></div>
     <button class="pdp-close-btn" id="pdpCloseBtn">✕</button>
   </div>
   <div class="pdp-body">
@@ -1021,19 +1028,17 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
   <a href="#featured" data-mobile-link>Shop</a>
   <a href="#categories" data-mobile-link>Categories</a>
   <a href="#story" data-mobile-link>Story</a>
-  <a href="#bestsellers" data-mobile-link>Best Sellers</a>
   <a href="#newsletter" data-mobile-link>Contact</a>
-  <div class="mobile-menu-bottom">FLEXIN SS26 — MANSOURA, EGYPT</div>
+  <div class="mobile-menu-bottom">RAVNHOOD SS26 — EGYPT</div>
 </nav>
 
 <nav id="navbar" role="navigation">
-  <a href="#top" class="nav-logo" id="navLogo">FLEXIN</a>
+  <a href="#top" class="nav-logo" id="navLogo">RAVNHOOD</a>
   <ul class="nav-links" role="list">
     <li><a href="#featured">Shop</a></li>
     <li><a href="#categories">Categories</a></li>
     <li><a href="#story">Story</a></li>
-    <li><a href="#bestsellers">Best Sellers</a></li>
-  </ul>
+    </ul>
   <div class="nav-right">
     <div class="nav-cart-btn">
       <span class="nav-cart-icon" id="navCartBtn" role="button" tabindex="0" aria-label="Open bag">
@@ -1050,24 +1055,13 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 <div class="announce-bar" id="announceBar">
   <div class="announce-track" id="announceTrack">
     <span>FREE SHIPPING ABOVE EGP 1,500</span><span class="announce-sep">·</span>
-    <span>CASH ON DELIVERY</span><span class="announce-sep">·</span>
     <span>SS26 — LIMITED QUANTITIES</span><span class="announce-sep">·</span>
     <span>FREE RETURNS WITHIN 14 DAYS</span><span class="announce-sep">·</span>
     <span>NOT FOR EVERYONE</span><span class="announce-sep">·</span>
-    <span>REAL AURA — PURE PRESENCE</span><span class="announce-sep">·</span>
-    <span>FREE SHIPPING ABOVE EGP 1,500</span><span class="announce-sep">·</span>
-    <span>CASH ON DELIVERY</span><span class="announce-sep">·</span>
-    <span>SS26 — LIMITED QUANTITIES</span><span class="announce-sep">·</span>
-    <span>FREE RETURNS WITHIN 14 DAYS</span><span class="announce-sep">·</span>
-    <span>NOT FOR EVERYONE</span><span class="announce-sep">·</span>
-    <span>REAL AURA — PURE PRESENCE</span><span class="announce-sep">·</span>
   </div>
 </div>
 
 <section class="hero" id="top">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-scanlines"></div>
-  <div class="hero-particles" id="heroParticles"></div>
   <div class="hero-vignette"></div>
   <div class="hero-content">
     <div class="hero-eyebrow"><span class="line">SS26 Collection — Now Live</span></div>
@@ -1076,50 +1070,32 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
       <span class="line"><span class="line-inner">EYES</span></span>
       <span class="line"><span class="line-inner">ON YOU</span></span>
     </h1>
-    <p class="hero-desc">Not for everyone<br>Not trying to be<br>FLEXIN is for the ones who walk in and the energy shifts</p>
+    <p class="hero-desc">Not for everyone<br>Not trying to be<br>RAVNHOOD is for the ones who walk in and the energy shifts</p>
     <div class="hero-btns">
       <a href="#featured" class="btn btn-white">SHOP NOW</a>
       <a href="#story" class="btn btn-ghost-white">OUR STORY</a>
     </div>
   </div>
-  <div class="hero-side-text">SS26 — FLEXIN STUDIOS — 001</div>
+  <div class="hero-side-text">SS26 — RAVNHOOD — 001</div>
   <div class="hero-scroll-line"></div>
 </section>
 
 <div class="ticker" role="marquee">
-  <div class="ticker-track">
-    <span class="ticker-item hi">FLEXIN STUDIOS</span><span class="ticker-dot">●</span>
+  <div class="ticker-track" id="tickerFwd">
+    <span class="ticker-item hi">RAVNHOOD</span><span class="ticker-dot">●</span>
     <span class="ticker-item">SS26 DROP</span><span class="ticker-dot">●</span>
     <span class="ticker-item hi">FREE SHIPPING +1500 EGP</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">REAL AURA — PURE PRESENCE</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">LIMITED QUANTITIES</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">CASH ON DELIVERY</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">NEW SEASON</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">NOT FOR EVERYONE</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">FLEXIN STUDIOS</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">SS26 DROP</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">FREE SHIPPING +1500 EGP</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">REAL AURA — PURE PRESENCE</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">LIMITED QUANTITIES</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">CASH ON DELIVERY</span><span class="ticker-dot">●</span>
+    <span class="ticker-item">LIMITED QUANTITIES</span><span class="ticker-dot">●</span>
     <span class="ticker-item hi">NEW SEASON</span><span class="ticker-dot">●</span>
     <span class="ticker-item">NOT FOR EVERYONE</span><span class="ticker-dot">●</span>
   </div>
 </div>
 <div class="ticker ticker-reverse" role="marquee">
-  <div class="ticker-track">
+  <div class="ticker-track" id="tickerRev">
+    <span class="ticker-item hi">RAVNHOOD</span><span class="ticker-dot">●</span>
     <span class="ticker-item">STREET CULTURE</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">MANSOURA EGYPT</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">OVERSIZED FIT</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">PURE AURA</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">WASHED FABRICS</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">FLEXIN STUDIOS</span><span class="ticker-dot">●</span>
+    <span class="ticker-item hi">RAVNHOOD</span><span class="ticker-dot">●</span>
     <span class="ticker-item">STREET CULTURE</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">MANSOURA EGYPT</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">OVERSIZED FIT</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">PURE AURA</span><span class="ticker-dot">●</span>
-    <span class="ticker-item">WASHED FABRICS</span><span class="ticker-dot">●</span>
-    <span class="ticker-item hi">FLEXIN STUDIOS</span><span class="ticker-dot">●</span>
   </div>
 </div>
 
@@ -1132,7 +1108,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
     <div class="pcard f-main" data-name="Oversized Hoodie — Washed Black" data-price="1200" data-cat="hoodies" data-stock="in">
       <div class="pcard-img"><div class="pcard-ph ph-1"><div class="ph-icon">◈</div><div class="ph-text">PRODUCT PHOTO</div></div></div>
       <div class="pcard-view-hint">VIEW →</div>
-      <div class="f-overlay"><div class="f-overlay-name">Flexin Oversized Hoodie — Washed Black</div><div class="f-overlay-price">EGP 1,200</div></div>
+      <div class="f-overlay"><div class="f-overlay-name">RAVNHOOD Oversized Hoodie — Washed Black</div><div class="f-overlay-price">EGP 1,200</div></div>
     </div>
     <div class="pcard" data-name="Boxy Graphic Tee — Black" data-price="750" data-cat="tshirts" data-stock="low">
       <div class="pcard-img"><div class="pcard-ph ph-2"><div class="ph-icon">◈</div><div class="ph-text">PRODUCT PHOTO</div></div></div>
@@ -1162,25 +1138,25 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
     <div class="section-title" data-ghost="SHOP"><small>Browse</small>SHOP BY CATEGORY</div>
   </div>
   <div class="cats-grid reveal">
-    <div class="cat-card" data-filter="tshirts" data-letter="F">
+    <div class="cat-card" data-filter="tshirts" data-letter="R">
       <div class="pcard-ph cat-ph ph-1"><div class="ph-icon">◈</div><div class="ph-text">T-SHIRTS</div></div>
       <div class="cat-mask"></div>
       <div class="cat-body"><div class="cat-name">T-SHIRTS</div><div class="cat-sub">Boxy · Oversized · Graphic</div></div>
       <div class="cat-arrow">→</div>
     </div>
-    <div class="cat-card" data-filter="denim" data-letter="L">
+    <div class="cat-card" data-filter="denim" data-letter="A">
       <div class="pcard-ph cat-ph ph-3"><div class="ph-icon">◈</div><div class="ph-text">DENIM</div></div>
       <div class="cat-mask"></div>
       <div class="cat-body"><div class="cat-name">DENIM</div><div class="cat-sub">Baggy · Wide · Washed</div></div>
       <div class="cat-arrow">→</div>
     </div>
-    <div class="cat-card" data-filter="jorts" data-letter="E">
+    <div class="cat-card" data-filter="jorts" data-letter="V">
       <div class="pcard-ph cat-ph ph-4"><div class="ph-icon">◈</div><div class="ph-text">JORTS</div></div>
       <div class="cat-mask"></div>
       <div class="cat-body"><div class="cat-name">JORTS</div><div class="cat-sub">Jean Shorts · Washed</div></div>
       <div class="cat-arrow">→</div>
     </div>
-    <div class="cat-card" data-filter="shorts" data-letter="X">
+    <div class="cat-card" data-filter="shorts" data-letter="N">
       <div class="pcard-ph cat-ph ph-2"><div class="ph-icon">◈</div><div class="ph-text">SHORTS</div></div>
       <div class="cat-mask"></div>
       <div class="cat-body"><div class="cat-name">SHORTS</div><div class="cat-sub">Baggy · Mesh · Cargo</div></div>
@@ -1269,12 +1245,12 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 <div class="story" id="story">
   <div class="story-visual reveal-left">
     <div class="story-ph"><div class="story-ph-label">EDITORIAL LOOKBOOK<br>PLACE YOUR SHOOT HERE</div></div>
-    <div class="story-ghost">FLEX</div>
+    <div class="story-ghost">RAVN</div>
   </div>
   <div class="story-content reveal-right">
     <div class="story-tag">Our Story</div>
     <h2 class="story-h2">BUILT FOR<br>THE <em>PRESENCE</em></h2>
-    <p class="story-p">You don't have to say a word.<br>They already know.<br><br>FLEXIN is built for the ones who walk in and the energy shifts — not loud, not chasing, just undeniable. Every drop is designed to be felt before it's seen. From the streets. For the streets.</p>
+    <p class="story-p">You don't have to say a word.<br>They already know.<br><br>RAVNHOOD is built for the ones who walk in and the energy shifts — not loud, not chasing, just undeniable. Every drop is designed to be felt before it's seen. From the streets. For the streets.</p>
     <div class="story-stats">
       <div><span class="stat-n">SS26</span><span class="stat-l">Current Season</span></div>
       <div><span class="stat-n">650+</span><span class="stat-l">Starting Price</span></div>
@@ -1284,26 +1260,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
   </div>
 </div>
 
-<section class="bestsellers" id="bestsellers">
-  <div class="section-head reveal">
-    <div class="section-title" data-ghost="BEST"><small>Most Wanted</small>BESTSELLERS</div>
-    <a href="#" onclick="filterProducts('all',event);smoothGoTo('shop')" class="section-link">View All</a>
-  </div>
-  <div class="bs-grid reveal">
-    <div class="bs-card pcard" data-name="Oversized Hoodie — Black" data-price="1200" data-cat="hoodies" data-stock="low">
-      <div class="bs-card-img"><div class="pcard-ph ph-1"><div class="ph-icon">★</div><div class="ph-text">BESTSELLER</div></div><div class="bs-rank">01</div></div>
-      <div class="bs-info"><div><div class="bs-name">Oversized Hoodie — Black</div><div class="bs-stars">★★★★★ <span style="color:var(--muted);font-family:'Barlow Condensed';font-size:9px;letter-spacing:1px;">(48)</span></div></div><div class="bs-price">EGP 1,200</div></div>
-    </div>
-    <div class="bs-card pcard" data-name="Boxy Graphic Tee — Black" data-price="750" data-cat="tshirts" data-stock="in">
-      <div class="bs-card-img"><div class="pcard-ph ph-3"><div class="ph-icon">★</div><div class="ph-text">BESTSELLER</div></div><div class="bs-rank">02</div></div>
-      <div class="bs-info"><div><div class="bs-name">Boxy Graphic Tee — Black</div><div class="bs-stars">★★★★★ <span style="color:var(--muted);font-family:'Barlow Condensed';font-size:9px;letter-spacing:1px;">(31)</span></div></div><div class="bs-price">EGP 750</div></div>
-    </div>
-    <div class="bs-card pcard" data-name="Zip-Up Jacket — Off Black" data-price="1450" data-cat="jackets" data-stock="in">
-      <div class="bs-card-img"><div class="pcard-ph ph-5"><div class="ph-icon">★</div><div class="ph-text">BESTSELLER</div></div><div class="bs-rank">03</div></div>
-      <div class="bs-info"><div><div class="bs-name">Zip-Up Jacket — Off Black</div><div class="bs-stars">★★★★★ <span style="color:var(--muted);font-family:'Barlow Condensed';font-size:9px;letter-spacing:1px;">(22)</span></div></div><div class="bs-price">EGP 1,450</div></div>
-    </div>
-  </div>
-</section>
+<div style="background:var(--black);height:3px;width:100%;display:block;"></div>
 
 <div class="drop-banner reveal" id="dropBanner">
   <div>
@@ -1328,7 +1285,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 <section class="newsletter" id="newsletter">
   <span class="nl-tag">Stay Connected</span>
   <h2 class="nl-title">JOIN THE<br>INNER CIRCLE</h2>
-  <p class="nl-sub">Early access. No spam. Just FLEXIN.</p>
+  <p class="nl-sub">Early access. No spam. Just RAVNHOOD.</p>
   <div class="nl-form">
     <input type="email" class="nl-input" id="nlInput" placeholder="your@email.com">
     <button class="nl-btn" id="nlBtn">JOIN</button>
@@ -1336,21 +1293,16 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 </section>
 
 <footer>
-  <div class="footer-grid" style="grid-template-columns:2fr 1fr 1fr;">
+  <div class="footer-grid">
     <div>
-      <a href="#top" class="footer-logo">FLEXIN</a>
-      <p class="footer-desc">Not for everyone. FLEXIN is built for the ones who already know.</p>
-      <div class="footer-socials">
-        <a href="https://instagram.com" target="_blank" class="soc" aria-label="Instagram"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-        <a href="https://tiktok.com" target="_blank" class="soc" aria-label="TikTok"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.78a8.18 8.18 0 004.78 1.52V6.83a4.85 4.85 0 01-1.01-.14z"/></svg></a>
-        <a href="https://x.com" target="_blank" class="soc" aria-label="X"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-        <a href="https://wa.me/201000000000" target="_blank" class="soc" aria-label="WhatsApp"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-      </div>
+      <a href="#top" class="footer-logo">RAVNHOOD</a>
+      <p class="footer-desc">Not for everyone. RAVNHOOD is built for the ones who already know.</p>
+      
     </div>
     <div>
       <div class="footer-col-title">Info</div>
       <ul class="footer-links">
-        <li><a href="#story">About FLEXIN</a></li>
+        <li><a href="#story">About RAVNHOOD</a></li>
         <li><a href="#featured">Lookbook</a></li>
         <li><a href="#newsletter">Contact</a></li>
         <li><button onclick="showToast('ORDER TRACKING COMING SOON')">Track Order</button></li>
@@ -1367,7 +1319,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2026 FLEXIN STUDIOS — ALL RIGHTS RESERVED</div>
+    <div class="footer-copy">© 2026 RAVNHOOD STUDIOS — ALL RIGHTS RESERVED</div>
     <div class="pay-badges"><span class="pay">Visa</span><span class="pay">Mastercard</span><span class="pay">Paymob</span><span class="pay">Cash on Delivery</span></div>
   </div>
 </footer>
@@ -1386,9 +1338,10 @@ let lerpY = window.scrollY, targetY = window.scrollY, rafScroll = null;
 function lerp(a,b,t){return a+(b-a)*t;}
 function smoothScrollLoop(){
   const dist=Math.abs(lerpY-targetY);
-  lerpY=lerp(lerpY,targetY,dist>200?0.12:0.09);
+  const t = dist>400?0.16:dist>100?0.13:0.11;
+  lerpY=lerp(lerpY,targetY,t);
   window.scrollTo(0,lerpY);
-  if(dist>0.5){rafScroll=requestAnimationFrame(smoothScrollLoop);}
+  if(dist>0.3){rafScroll=requestAnimationFrame(smoothScrollLoop);}
   else{window.scrollTo(0,targetY);lerpY=targetY;rafScroll=null;}
 }
 function smoothScrollTo(y){
@@ -1561,7 +1514,7 @@ const policies={
   refund:{title:'REFUND & EXCHANGE',body:`<h4>Returns</h4>We accept returns within 14 days of delivery. Items must be unworn, unwashed, and in original condition with tags attached.<h4>Exchange</h4>Exchange requests must be made within 14 days. We'll cover return shipping on our end if the item is defective.<h4>How To Return</h4>Contact us on WhatsApp or Instagram with your order number and reason. We'll guide you through the process.<h4>Refund Timing</h4>Refunds are processed within 5–7 business days after we receive your return.`},
   shipping:{title:'SHIPPING POLICY',body:`<h4>Cairo & Giza</h4>Delivery within 2–4 business days.<h4>National (Rest of Egypt)</h4>Delivery within 4–7 business days.<h4>Free Shipping</h4>Free shipping on all orders above EGP 1,500.<h4>Cash on Delivery</h4>Cash on delivery available for all orders across Egypt.<h4>Order Tracking</h4>You'll receive a tracking number via WhatsApp once your order is dispatched.`},
   privacy:{title:'PRIVACY POLICY',body:`<h4>Data We Collect</h4>We collect your name, phone number, email, and shipping address to process your order.<h4>How We Use It</h4>Your data is used solely for order fulfillment and customer service. We never sell or share your data with third parties.<h4>Cookies</h4>We use basic cookies to improve your experience on this site. No tracking or advertising cookies.<h4>Your Rights</h4>You can request deletion of your personal data at any time by contacting us.`},
-  terms:{title:'TERMS OF SERVICE',body:`<h4>Usage</h4>By accessing this site, you agree to use it for lawful purposes only.<h4>Orders</h4>All orders are subject to availability. We reserve the right to cancel any order at our discretion with a full refund.<h4>Pricing</h4>All prices are in EGP and inclusive of applicable taxes. Prices may change without prior notice.<h4>Intellectual Property</h4>All content on this site, including logos, graphics, and copy, is the property of FLEXIN and may not be reproduced without written permission.`}
+  terms:{title:'TERMS OF SERVICE',body:`<h4>Usage</h4>By accessing this site, you agree to use it for lawful purposes only.<h4>Orders</h4>All orders are subject to availability. We reserve the right to cancel any order at our discretion with a full refund.<h4>Pricing</h4>All prices are in EGP and inclusive of applicable taxes. Prices may change without prior notice.<h4>Intellectual Property</h4>All content on this site, including logos, graphics, and copy, is the property of RAVNHOOD and may not be reproduced without written permission.`}
 };
 function openPolicy(key){const p=policies[key];if(!p)return;document.getElementById('policyModalTitle').textContent=p.title;document.getElementById('policyModalBody').innerHTML=p.body;document.getElementById('policyOverlay').classList.add('open');document.getElementById('policyModal').classList.add('open');document.body.style.overflow='hidden';}
 function closePolicy(){document.getElementById('policyOverlay').classList.remove('open');document.getElementById('policyModal').classList.remove('open');if(!pdpOpen)document.body.style.overflow='';}
@@ -1570,16 +1523,24 @@ document.getElementById('policyOverlay').addEventListener('click',closePolicy);
 
 /* ═══ SCROLL REVEAL ═══ */
 const revObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revObs.unobserve(e.target);}});
-},{threshold:0.05,rootMargin:'0px 0px -30px 0px'});
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+    } else {
+      // Only un-reveal if element is BELOW viewport (user scrolled back up)
+      if(e.boundingClientRect.top > window.innerHeight * 0.1){
+        e.target.classList.remove('in');
+      }
+    }
+  });
+},{threshold:0.06,rootMargin:'0px 0px -40px 0px'});
 
 document.querySelectorAll('.reveal, .reveal-fade, .reveal-left, .reveal-right').forEach(el=>{
   const rect=el.getBoundingClientRect();
   if(rect.top<window.innerHeight*0.95&&rect.bottom>0){
-    setTimeout(()=>el.classList.add('in'),50);
-  } else {
-    revObs.observe(el);
+    el.classList.add('in');
   }
+  revObs.observe(el); // always observe for bidirectional
 });
 
 /* ═══ COUNTDOWN ═══ */
@@ -1597,7 +1558,7 @@ setInterval(tickCountdown,1000);tickCountdown();
 document.getElementById('nlBtn').addEventListener('click',()=>{
   const inp=document.getElementById('nlInput');
   if(!inp.value.includes('@')){inp.focus();inp.placeholder='Enter a valid email address';setTimeout(()=>inp.placeholder='your@email.com',2500);return;}
-  inp.value='';inp.placeholder="You're in. Welcome to FLEXIN.";
+  inp.value='';inp.placeholder="You're in. Welcome to RAVNHOOD.";
   document.getElementById('nlBtn').textContent='✓';
   showToast("YOU'RE IN THE CIRCLE");
   setTimeout(()=>{inp.placeholder='your@email.com';document.getElementById('nlBtn').textContent='JOIN';},4000);
@@ -1628,11 +1589,11 @@ const detailsMap = {
   tshirts:  ['100% Heavyweight Cotton — 240gsm','Boxy oversized silhouette','Double-stitched hem & cuffs','Garment-washed for a lived-in feel','Puff or screen print graphic'],
   denim:    ['100% Cotton denim — 12oz','Baggy wide-leg cut','5-pocket construction','Washed & enzyme-treated','Reinforced stitching at stress points'],
   jorts:    ['100% Cotton denim','Baggy fit — sits below waist','Raw hem or finished hem options','Washed & enzyme-treated','Double waistband detail'],
-  shorts:   ['100% Cotton twill or mesh','Relaxed baggy silhouette','Elasticated waistband + drawstring','Deep pockets','FLEXIN rubber patch'],
+  shorts:   ['100% Cotton twill or mesh','Relaxed baggy silhouette','Elasticated waistband + drawstring','Deep pockets','RAVNHOOD rubber patch'],
   hoodies:  ['100% Cotton French Terry','Insanely spacious pockets','Double waistband','Shiny rubber print detail','Inspired by 90s silhouettes'],
-  bottoms:  ['100% Cotton French Terry','Relaxed tapered fit','Elasticated waistband + drawstring','Deep side pockets','FLEXIN embroidered logo'],
+  bottoms:  ['100% Cotton French Terry','Relaxed tapered fit','Elasticated waistband + drawstring','Deep side pockets','RAVNHOOD embroidered logo'],
   jackets:  ['100% Cotton shell','Zip-up construction','Ribbed cuffs & hem','Chest pocket detail','Washed & garment-dyed'],
-  socks:    ['80% Cotton, 18% Polyamide, 2% Elastane','Crew height','Ribbed cuff','Woven FLEXIN logo','One size fits most'],
+  socks:    ['80% Cotton, 18% Polyamide, 2% Elastane','Crew height','Ribbed cuff','Woven RAVNHOOD logo','One size fits most'],
 };
 
 const bgColors = ['#d5d5d5','#cccccc','#c8c8c8','#d0d0d0','#c4c4c4','#cbcbcb','#d3d3d3'];
@@ -1826,29 +1787,11 @@ window.addEventListener('load', ()=>{
   }, 2000);
 });
 
-/* ═══ HERO PARTICLES ═══ */
-(function(){
-  const container = document.getElementById('heroParticles');
-  if(!container) return;
-  const count = isTouch() ? 12 : 25;
-  for(let i=0; i<count; i++){
-    const p = document.createElement('div');
-    p.className = 'hero-particle';
-    p.style.left = Math.random()*100 + '%';
-    p.style.animationDuration = (6 + Math.random()*8) + 's';
-    p.style.animationDelay = (Math.random()*5) + 's';
-    p.style.width = p.style.height = (1 + Math.random()*2) + 'px';
-    p.style.opacity = .1 + Math.random()*.2;
-    container.appendChild(p);
-  }
-})();
-
 /* ═══ PARALLAX SCROLL EFFECTS ═══ */
 (function(){
   if(isTouch()) return;
 
   const hero = document.querySelector('.hero-content');
-  const heroGrid = document.querySelector('.hero-grid-bg');
   const storyGhost = document.querySelector('.story-ghost');
 
   let ticking = false;
@@ -1865,9 +1808,6 @@ window.addEventListener('load', ()=>{
         hero.style.opacity = 1 - p * 0.8;
       }
 
-      if(heroGrid && scrollY < vh){
-        heroGrid.style.transform = `translateY(${scrollY * 0.15}px)`;
-      }
 
       if(storyGhost){
         const rect = storyGhost.parentElement.getBoundingClientRect();
@@ -1896,6 +1836,61 @@ window.addEventListener('load', ()=>{
   }, {threshold:0.1});
   sections.forEach(s=>observer.observe(s));
 })();
+
+/* ═══ MARQUEE ENGINE — bulletproof infinite scroll ═══ */
+(function(){
+  function startMarquee(track, pxPerFrame, reverse) {
+    if(!track) return;
+    // clone until content is at least 4× viewport wide
+    const orig = track.innerHTML;
+    let copies = 1;
+    function ensureWidth() {
+      while(track.scrollWidth < window.innerWidth * 4) {
+        track.innerHTML += orig;
+        copies++;
+      }
+    }
+    ensureWidth();
+    window.addEventListener('resize', ensureWidth);
+
+    // unitWidth = width of ONE original set
+    const unitWidth = () => track.scrollWidth / copies;
+
+    let pos = reverse ? -unitWidth() : 0;
+
+    function tick() {
+      if(reverse) {
+        pos += pxPerFrame;
+        if(pos >= 0) pos -= unitWidth();
+      } else {
+        pos -= pxPerFrame;
+        if(pos <= -unitWidth()) pos += unitWidth();
+      }
+      track.style.transform = 'translateX(' + pos + 'px)';
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  // Wait for fonts to load so scrollWidth is accurate
+  window.addEventListener('load', function() {
+    startMarquee(document.getElementById('announceTrack'), 0.55, false);
+    startMarquee(document.getElementById('tickerFwd'),     0.8,  false);
+    startMarquee(document.getElementById('tickerRev'),     0.65, true);
+  });
+})();
+
+
+/* ═══ NAV LETTER WAVE EFFECT ═══ */
+(function(){
+  document.querySelectorAll('.nav-links a').forEach(function(link) {
+    var text = link.textContent.trim();
+    link.innerHTML = Array.from(text).map(function(ch, i) {
+      return '<span class="nl" style="--i:' + i + '">' + (ch === ' ' ? '&nbsp;' : ch) + '</span>';
+    }).join('');
+  });
+})();
+
 </script>
 </body>
 </html>
