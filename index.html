@@ -772,7 +772,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 @media (max-width:768px) {
   nav { padding:0 20px; }
   .nav-links { display:none; }
-  .hamburger { display:flex; }
+  .hamburger { display:none; }
   section { padding:60px 20px; }
   .cats { padding:60px 20px; }
   .hero-content { padding:0 24px 55px; max-height:calc(100% - 20px); }
@@ -801,8 +801,10 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
   .nl-form { flex-direction:column; }
   .nl-input { border-right:1.5px solid var(--black); border-bottom:none; }
   footer { padding:44px 20px 24px; }
-  .footer-grid { grid-template-columns:1fr; gap:36px; }
+  .footer-grid { grid-template-columns:1fr 1fr; gap:24px; }
+  .footer-grid > div:first-child { grid-column:1/-1; }
   .footer-bottom { flex-direction:column; text-align:center; }
+  .pay-badges { display:none; }
   .cart { width:100%; right:-100%; }
   .section-head { flex-direction:column; align-items:flex-start; gap:14px; }
   .f-overlay { transform: translateY(0) !important; padding-bottom: 28px; }
