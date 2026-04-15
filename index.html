@@ -297,6 +297,8 @@ nav.at-dark .cart-badge { color: var(--white) !important; opacity: 1 !important;
   display:flex; flex-direction:column;
   max-height: calc(100% - 40px);
   justify-content: flex-end;
+  transform-origin: left bottom;
+  will-change: transform, opacity;
 }
 .hero-eyebrow {
   display:flex; align-items:center; gap:16px;
@@ -1858,4 +1860,21 @@ window.addEventListener('load', ()=>{
   window.addEventListener('load', function() {
     startMarquee(document.getElementById('announceTrack'), 0.55, false);
     startMarquee(document.getElementById('tickerFwd'),     0.8,  false);
-    startMarquee(document.getElementById('tickerRev'),   
+    startMarquee(document.getElementById('tickerRev'),     0.65, true);
+  });
+})();
+
+
+/* ═══ NAV LETTER WAVE EFFECT ═══ */
+(function(){
+  document.querySelectorAll('.nav-links a').forEach(function(link) {
+    var text = link.textContent.trim();
+    link.innerHTML = Array.from(text).map(function(ch, i) {
+      return '<span class="nl" style="--i:' + i + '">' + (ch === ' ' ? '&nbsp;' : ch) + '</span>';
+    }).join('');
+  });
+})();
+
+</script>
+</body>
+</html>
