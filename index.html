@@ -201,7 +201,6 @@ nav.at-dark { background:rgba(0,0,0,.95); border-bottom-color: rgba(255,255,255,
 nav.at-dark .nav-logo { color:var(--white); }
 nav.at-dark .nav-links a .nl { color:rgba(255,255,255,.4); }
 nav.at-dark .nav-links a:hover .nl { color:rgba(255,255,255,.9); }
-/* at-dark underline removed */
 nav.at-dark .nav-cart-icon svg { stroke: rgba(255,255,255,0.7); }
 nav.at-dark .nav-cart-icon:active svg { stroke: var(--white); }
 nav.at-dark .hamburger span { background:rgba(255,255,255,.6); }
@@ -212,7 +211,6 @@ nav.at-dark .cart-badge { color: var(--white) !important; opacity: 1 !important;
 .nav-links a { font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); text-decoration:none; position:relative; padding-bottom:3px; cursor:pointer; display:inline-flex; align-items:center; gap:0; overflow:visible; }
 .nav-links a::after { display:none; }
 .nav-links a:hover { color:inherit; }
-/* ── Nav letter wave ── */
 .nl {
   display:inline-block;
   transition:
@@ -337,7 +335,6 @@ nav.at-dark .cart-badge { color: var(--white) !important; opacity: 1 !important;
   transition:color .25s, transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s; cursor:pointer; touch-action:manipulation;
   min-height:52px; -webkit-tap-highlight-color:transparent; -webkit-appearance:none;
 }
-/* Shine sweep on buttons */
 .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.15) 50%, transparent 65%); transform:translateX(-100%); transition:transform .55s; pointer-events:none; }
 .btn:hover::before { transform:translateX(100%); }
 .btn:active { transform:scale(.96); }
@@ -366,10 +363,6 @@ nav.at-dark .cart-badge { color: var(--white) !important; opacity: 1 !important;
 .ticker-item.hi { color:var(--black); }
 .ticker-dot { color:var(--black); padding:0 12px; font-size:6px; vertical-align:middle; display:inline-flex; align-items:center; }
 
-
-.ticker-reverse .ticker-track {  }
-
-
 section { padding:100px 80px; }
 .section-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:52px; padding-bottom:20px; border-bottom:2px solid var(--black); }
 .section-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(40px,6vw,64px); letter-spacing:4px; color:var(--black); line-height:1; position:relative; }
@@ -392,13 +385,8 @@ section { padding:100px 80px; }
 .reveal-right { transform:translateX(60px) scale(.97); opacity:0; filter:blur(4px); transition:transform 1s cubic-bezier(.16,1,.3,1), opacity .8s, filter .7s; }
 .reveal-right.in { transform:none; opacity:1; filter:blur(0); }
 
-/* Mobile uses the same IntersectionObserver-based reveal as desktop for parity */
-@keyframes force-reveal { to { transform: none; opacity:1; filter:blur(0); } }
-@keyframes force-reveal-fade { to { opacity: 1; transform: none; filter:blur(0); } }
-
 /* ═══ PRODUCT CARDS — shine on hover, no 3D ═══ */
 .pcard { position:relative; overflow:hidden; background:var(--bg2); transition: box-shadow .45s, transform .35s cubic-bezier(.16,1,.3,1); cursor:pointer; }
-/* Shine sweep effect */
 .pcard::after {
   content:''; position:absolute; top:0; left:-100%; width:55%; height:100%;
   background:linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
@@ -456,7 +444,6 @@ section { padding:100px 80px; }
 .cats { background:var(--bg); }
 .cats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; }
 .cat-card { position:relative; overflow:hidden; aspect-ratio:2/3; background:var(--bg3); cursor:pointer; touch-action:manipulation; transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .4s; }
-/* Shine on category cards too */
 .cat-card::after {
   content:''; position:absolute; top:0; left:-100%; width:55%; height:100%;
   background:linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent);
@@ -828,10 +815,18 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
   .reveal-right  { filter:none !important; }
   .reveal-right.in{ filter:none !important; }
 
-  /* Featured non-main cards: fix all-black appearance from dark overlay on grey placeholder */
+  /* Featured non-main cards: fix all-black appearance */
   .featured-grid .pcard:not(.f-main) .f-overlay {
     background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.55) 45%, transparent 70%);
     padding: 50px 16px 14px;
+  }
+
+  /* ── FIX: RAVN ghost — keep story-h2::after always visible on mobile ── */
+  .story-h2::after {
+    right: -10px;
+    font-size: clamp(80px, 28vw, 160px);
+    opacity: 1;
+    color: rgba(0,0,0,.04);
   }
 }
 
@@ -856,8 +851,24 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
 
 /* ═══ TOUCH DEVICE FIXES ═══ */
 @media (hover: none) {
-  /* Mobile keeps the same effects as desktop - only keep PDP arrow visible for usability */
+  /* ── FIX: Disable ALL product card hover effects on touch — tap is clean, no ghost states ── */
+  .pcard:hover { box-shadow:none !important; transform:none !important; }
+  .pcard:hover::after { animation:none !important; left:-100% !important; }
+  .pcard:hover .pcard-ph { transform:none !important; }
+  .pcard-view-hint { display:none !important; }
+  /* Keep f-overlay always visible on touch (already handled by mobile CSS, this is safety net) */
+  .pcard:hover .f-overlay { transform:translateY(0) !important; }
+  /* Cat cards — no hover scale/glow/shine */
+  .cat-card:hover { transform:none !important; box-shadow:none !important; }
+  .cat-card:hover::after { animation:none !important; }
+  .cat-card:hover .cat-ph { transform:none !important; }
+  .cat-card:hover .cat-mask { background:linear-gradient(to top,rgba(0,0,0,.7) 0%,rgba(0,0,0,.05) 50%) !important; }
+  .cat-card:hover::before { color:rgba(255,255,255,.055) !important; transform:none !important; }
+  .cat-card:hover .cat-sub { opacity:.8 !important; transform:translateY(4px) !important; }
+  .cat-card:hover .cat-arrow { transform:translate(6px,-6px) !important; opacity:0 !important; }
+  /* PDP arrow stays visible for usability */
   .pdp-nav-arrow { opacity: 1 !important; }
+  /* Standard button hover resets */
   .cart-close:hover { background: none; color: var(--black); }
   .pdp-close-btn:hover { background: none; color: var(--black); }
   .policy-modal-close:hover { background: none; color: var(--black); }
@@ -868,6 +879,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
   .btn-ghost-black:hover { color:var(--muted2); border-color:var(--border2); }
   .btn-white:hover { box-shadow:none; }
   .btn-black:hover { box-shadow:none; }
+  .pdp-atc:hover { letter-spacing: 6px; background: var(--black); }
 }
 </style>
 </head>
@@ -1313,7 +1325,6 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
     <div>
       <a href="#top" class="footer-logo">RAVNHOOD</a>
       <p class="footer-desc">Not for everyone RAVNHOOD is built for the ones who already know</p>
-      
     </div>
     <div>
       <div class="footer-col-title">Info</div>
@@ -1347,12 +1358,13 @@ const isTouch = () => navigator.maxTouchPoints > 0 || window.matchMedia('(pointe
 /* ═══ iOS :active FIX ═══ */
 document.addEventListener('touchstart', function(){}, {passive:true});
 
-/* ═══ SMOOTH SCROLL ═══ */
+/* ═══ SMOOTH SCROLL — FIX: increased lerp so desktop scroll isn't heavy ═══ */
 let lerpY = window.scrollY, targetY = window.scrollY, rafScroll = null;
 function lerp(a,b,t){return a+(b-a)*t;}
 function smoothScrollLoop(){
   const dist=Math.abs(lerpY-targetY);
-  const t = dist>400?0.16:dist>100?0.13:0.11;
+  /* FIXED: was 0.16/0.13/0.11 — too slow. Now 0.24/0.20/0.16 for snappy, fluid feel */
+  const t = dist>400?0.24:dist>100?0.20:0.16;
   lerpY=lerp(lerpY,targetY,t);
   window.scrollTo(0,lerpY);
   if(dist>0.3){rafScroll=requestAnimationFrame(smoothScrollLoop);}
@@ -1535,17 +1547,13 @@ function closePolicy(){document.getElementById('policyOverlay').classList.remove
 document.getElementById('policyCloseBtn').addEventListener('click',closePolicy);
 document.getElementById('policyOverlay').addEventListener('click',closePolicy);
 
-/* ═══ SCROLL REVEAL ═══ */
+/* ═══ SCROLL REVEAL — FIX: removed un-reveal so RAVN ghost never disappears ═══ */
 const revObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
+    /* FIXED: previously removed 'in' class when scrolling back up — caused RAVN ghost
+       to disappear. Now elements stay revealed once they've entered the viewport. */
     if(e.isIntersecting){
       e.target.classList.add('in');
-      e.target.dataset.seen='1';
-    } else if(e.target.dataset.seen==='1'){
-      // Un-reveal when element leaves viewport downward (user scrolled up past it)
-      if(e.boundingClientRect.top > 0){
-        e.target.classList.remove('in');
-      }
     }
   });
 },{threshold:0.12,rootMargin:'0px 0px -80px 0px'});
@@ -1554,7 +1562,6 @@ document.querySelectorAll('.reveal, .reveal-fade, .reveal-left, .reveal-right').
   const rect=el.getBoundingClientRect();
   if(rect.top<window.innerHeight*0.95&&rect.bottom>0){
     el.classList.add('in');
-    el.dataset.seen='1';
   }
   revObs.observe(el);
 });
@@ -1787,8 +1794,6 @@ document.addEventListener('keydown',e=>{
 
 updateNav();
 
-/* Safety net removed - mobile now uses same reveal observer as desktop */
-
 /* ═══ PAGE LOADER ═══ */
 window.addEventListener('load', ()=>{
   setTimeout(()=>{
@@ -1798,7 +1803,7 @@ window.addEventListener('load', ()=>{
 
 /* ═══ PARALLAX SCROLL EFFECTS ═══ */
 (function(){
-  if(isTouch()) return; // skip on mobile — too heavy
+  if(isTouch()) return;
   const hero = document.querySelector('.hero-content');
   const storyGhost = document.querySelector('.story-ghost');
 
@@ -1815,7 +1820,6 @@ window.addEventListener('load', ()=>{
         hero.style.transform = `translateY(${scrollY * 0.3}px) scale(${1 - p*0.05})`;
         hero.style.opacity = 1 - p * 0.8;
       }
-
 
       if(storyGhost){
         const rect = storyGhost.parentElement.getBoundingClientRect();
@@ -1849,7 +1853,6 @@ window.addEventListener('load', ()=>{
 (function(){
   function startMarquee(track, pxPerFrame, reverse) {
     if(!track) return;
-    // clone until content is at least 4× viewport wide
     const orig = track.innerHTML;
     let copies = 1;
     function ensureWidth() {
@@ -1861,7 +1864,6 @@ window.addEventListener('load', ()=>{
     ensureWidth();
     window.addEventListener('resize', ensureWidth);
 
-    // unitWidth = width of ONE original set
     const unitWidth = () => track.scrollWidth / copies;
 
     let pos = reverse ? -unitWidth() : 0;
@@ -1880,14 +1882,12 @@ window.addEventListener('load', ()=>{
     tick();
   }
 
-  // Wait for fonts to load so scrollWidth is accurate
   window.addEventListener('load', function() {
     startMarquee(document.getElementById('announceTrack'), 0.55, false);
     startMarquee(document.getElementById('tickerFwd'),     0.8,  false);
     startMarquee(document.getElementById('tickerRev'),     0.65, true);
   });
 })();
-
 
 /* ═══ NAV LETTER WAVE EFFECT ═══ */
 (function(){
