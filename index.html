@@ -51,13 +51,14 @@
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 button, input, select, textarea { border-radius:0; -webkit-appearance:none; -moz-appearance:none; appearance:none; }
-html { scroll-behavior: auto; background: var(--white); }
+html { scroll-behavior: auto; background: var(--white); overflow-x:hidden; }
 body {
   background: var(--white);
   color: var(--text);
   font-family: 'Barlow', sans-serif;
   font-weight: 300;
   overflow-x: hidden;
+  max-width: 100%;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -794,7 +795,7 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
   .story-stats { flex-wrap:wrap; gap:28px; }
   .bs-grid { grid-template-columns:repeat(2,1fr); }
   .drop-banner { flex-direction:column; padding:44px 20px; }
-  .drop-banner::after { font-size:180px; }
+  .drop-banner::after { font-size:160px; right:auto; left:50%; transform:translate(-50%,-50%); letter-spacing:-8px; color:rgba(255,255,255,.06); }
   .drop-right { text-align:left; }
   .countdown { justify-content:flex-start; gap:10px; }
   .newsletter { padding:80px 24px; }
@@ -810,6 +811,28 @@ footer { background:var(--black); padding:72px 80px 36px; border-top:2px solid r
   .f-overlay { transform: translateY(0) !important; padding-bottom: 28px; }
   .cat-sub { opacity:1; transform:translateY(0); }
   .cat-arrow { transform:translate(0,0); opacity:1; border-color:rgba(255,255,255,.4); color:rgba(255,255,255,.6); }
+
+  /* ── MOBILE PERFORMANCE: kill expensive filters & effects ── */
+  #noise { display:none; }
+  .hero-grid-bg { display:none; }
+  .hero-scanlines { display:none; }
+  nav { backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+  nav.at-dark { backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+  /* Blur on reveal is the #1 scroll killer on mobile — remove it */
+  .reveal        { filter:none !important; }
+  .reveal.in     { filter:none !important; }
+  .reveal-fade   { filter:none !important; }
+  .reveal-fade.in{ filter:none !important; }
+  .reveal-left   { filter:none !important; }
+  .reveal-left.in{ filter:none !important; }
+  .reveal-right  { filter:none !important; }
+  .reveal-right.in{ filter:none !important; }
+
+  /* Featured non-main cards: fix all-black appearance from dark overlay on grey placeholder */
+  .featured-grid .pcard:not(.f-main) .f-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.55) 45%, transparent 70%);
+    padding: 50px 16px 14px;
+  }
 }
 
 @media (max-height: 600px) and (max-width: 768px) {
@@ -1377,7 +1400,7 @@ window.addEventListener('keydown',e=>{
   if(e.key==='Home'){e.preventDefault();smoothScrollTo(0);}
   if(e.key==='End'){e.preventDefault();smoothScrollTo(document.body.scrollHeight);}
 });
-window.addEventListener('scroll',()=>{if(isTouch()){lerpY=window.scrollY;targetY=window.scrollY;}},{passive:true});
+window.addEventListener('scroll',()=>{ lerpY=window.scrollY; targetY=window.scrollY; },{passive:true});
 window.addEventListener('load',()=>{lerpY=window.scrollY;targetY=window.scrollY;});
 
 /* ═══ TOAST ═══ */
@@ -1775,6 +1798,7 @@ window.addEventListener('load', ()=>{
 
 /* ═══ PARALLAX SCROLL EFFECTS ═══ */
 (function(){
+  if(isTouch()) return; // skip on mobile — too heavy
   const hero = document.querySelector('.hero-content');
   const storyGhost = document.querySelector('.story-ghost');
 
